@@ -1,70 +1,29 @@
-var Todo = require('./models/todo');
 var Revendedora = require('./models/revendedora');
-
-function getTodos(res){
-	Todo.find(function(err, todos) {
-
-			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-			if (err)
-				res.send(err)
-
-			res.json(todos); // return all todos in JSON format
-		});
-};
 
 function getRevendedoras(res) {
 	Revendedora.find(function(err, revendedoras) {
+		// se der erro, retorna erro
 		if (err)
 			res.send(err);
-		res.json(revendedoras);
+		res.json(revendedoras); //retorna todas as revendedoras em formato JSON
 	});
 };
 
 module.exports = function(app) {
 
 	// api ---------------------------------------------------------------------
-	// get all todos
-	app.get('/api/todos', function(req, res) {
-
-		// use mongoose to get all todos in the database
-		getTodos(res);
-	});
-
-	// create todo and send back all todos after creation
-	app.post('/api/todos', function(req, res) {
-
-		// create a todo, information comes from AJAX request from Angular
-		Todo.create({
-			text : req.body.text,
-			done : false
-		}, function(err, todo) {
-			if (err)
-				res.send(err);
-
-			// get and return all the todos after you create another
-			getTodos(res);
-		});
-	});	
-
-	// delete a todo
-	app.delete('/api/todos/:todo_id', function(req, res) {
-		Todo.remove({
-			_id : req.params.todo_id
-		}, function(err, todo) {
-			if (err)
-				res.send(err);
-
-			getTodos(res);
-		});
-	});	
-
+	// Busca todas as revendedoras
 	app.get('/api/revendedoras', function(req, res) {
-		getRevendedoras(res);
+		getRevendedoras(res); //usa mongoose para retornar todas as revendedoras
 	});
 
+	//cria a revendedora e retorna todas as revendedoras
 	app.post('/api/revendedoras', function(req, res) {
+		// Cria a Revendedora, informação vem de requisição AJAX do Angular
 		Revendedora.create({
-			nome : req.body.nome
+			nome : req.body.nome,
+			sobrenome : req.body.sobrenome,
+			senha : req.body.senha
 		}, function(err, revend) {
 			if (err)
 				res.send(err);
@@ -72,6 +31,21 @@ module.exports = function(app) {
 		})
 	});
 
+	//Altera revendedora
+	app.put('/api/revendedoras/:revend_id', function(req,res) {
+		Revendedora.update({
+			_id : req.params.revend_id,
+			nome : req.body.nome,
+			sobrenome : req.body.sobrenome,
+			senha : req.body.senha
+		}, function(err, revend) {
+			if (err)
+				res.send(err);
+			getRevendedoras(res);
+		});
+	});
+
+	//Exclui revendedora
 	app.delete('/api/revendedoras/:revend_id', function(req, res) {
 		Revendedora.remove({
 			_id : req.params.revend_id
@@ -82,10 +56,15 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/revendedoras', function(req, res) {
-		res.sendfile('./public/login.html');
+	app.get('/revendedoras/cadastro', function(req, res) {
+		res.sendfile('./public/cadastro.html');
 		return;
 	});	
+
+	app.get('/revendedoras', function(req,res) {
+		res.sendfile('./public/login.html');
+		return;
+	});
 
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {

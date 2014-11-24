@@ -1,6 +1,6 @@
 angular.module('revendedoraController', [])
 
-	// inject the Todo service factory into our controller
+	// inject the Revendedora service factory into our controller
 	.controller('mainController', ['$scope','$http','Revendedoras', function($scope, $http, Revendedoras) {
 		$scope.formData = {};
 		$scope.loading = true;
@@ -34,6 +34,19 @@ angular.module('revendedoraController', [])
 					});
 			}
 		};
+
+		$scope.updateRevendedora = function(id) {
+			if (id != undefined) {
+				if ($scope.formData.nome != undefined) {
+					Revendedoras.update(id, $scope.formData)
+						.success(function(data) {
+							$scope.loading = false;
+							$scope.revendedoras = data;
+						});
+				}
+			}
+
+		}
 
 		// DELETE ==================================================================
 		// delete a todo after checking it

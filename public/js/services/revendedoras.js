@@ -12,6 +12,9 @@ angular.module('revendedoraService', [])
 			},
 			delete : function(id) {
 				return $http.delete('/api/revendedoras/' + id);
+			},
+			put : function(id) {
+				return $http.put('/api/revendedoras/' + id);
 			}
 		}
 	}]);
