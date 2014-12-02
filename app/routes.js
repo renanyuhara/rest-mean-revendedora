@@ -20,6 +20,12 @@ function getProdutos(res) {
 
 module.exports = function(app) {
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});	
+
 	// api ---------------------------------------------------------------------
 	// Busca todas as revendedoras
 	app.get('/api/revendedoras', function(req, res) {
@@ -67,14 +73,44 @@ module.exports = function(app) {
 	});
 
 	// Produtos
+	app.get('/api/produtos/init', function(req,res) {
+		Produto.create({
+			nome : "Camisa",
+			full_img_url : "",
+			sku : "89239812371",
+			preco : 1.43
+		});
+		Produto.create({
+			nome : "Meia",
+			full_img_url : "",
+			sku : "758459374",
+			preco : 25.99
+		});
+	});
 	app.get('/api/produtos', function(req,res) {
 		getProdutos(res);
 	});
-
 	app.post('/api/produto', function(req,res) {
+
 		Produto.create({
-			
+			nome : req.body.nome,
+			full_img_url : req.body.full_img_url,
+			sku : req.body.sku,
+			preco : req.body.preco
+		}, function(err, revend) {
+			if (err)
+				res.send(err);
+			getProdutos(res);
 		})
+	});
+	app.delete('/api/produto/:id', function(req,res) {
+		Produto.remove({
+			_id : req.params.id
+		}, function(err, produto) {
+			if (err)
+				res.send(err);
+			getProdutos(res);
+		});		
 	});
 	// Fim Produtos
 
