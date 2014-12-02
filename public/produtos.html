@@ -1,0 +1,33 @@
+<html>
+<head>
+	<title>Produtos</title>
+
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+	<h1>Produtos</h1>
+	<div id="content"></div>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$.ajax({
+				type: "GET",
+				url: "http://192.168.19.93:8080/api/produtos",
+				dataType: 'json',
+				cache: false,
+				success: function(data){
+					$.each(data, function(){
+						$.each(this, function(name, value){
+							console.log(name);
+							console.log(value);
+							$("#content").append(name + ": " + value + "<br />");
+						});
+					});
+				}, error: function(xhr, textStatus){
+					alert(xhr.responseText);
+				}
+			});
+		});
+	</script>
+</body>
+</html>
