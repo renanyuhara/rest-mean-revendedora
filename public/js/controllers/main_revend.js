@@ -24,7 +24,8 @@ angular.module('revendedoraController', [])
 				$scope.loading = true;
 
 				// call the create function from our service (returns a promise object)
-				Revendedoras.create($scope.formData)
+				//Chama public/js/services/revendedoras.js
+				Revendedoras.criar($scope.formData)
 
 					// if successful creation, call our get function to get all the new revendedoras
 					.success(function(data) {
@@ -38,7 +39,8 @@ angular.module('revendedoraController', [])
 		$scope.updateRevendedora = function(id) {
 			if (id != undefined) {
 				if ($scope.formData.nome != undefined) {
-					Revendedoras.update(id, $scope.formData)
+					//Chama public/js/services/revendedoras.js
+					Revendedoras.editar(id, $scope.formData)
 						.success(function(data) {
 							$scope.loading = false;
 							$scope.revendedoras = data;
@@ -53,7 +55,8 @@ angular.module('revendedoraController', [])
 		$scope.deleteRevendedora = function(id) {
 			$scope.loading = true;
 
-			Revendedoras.delete(id)
+			//Chama public/js/services/revendedoras.js
+			Revendedoras.excluir(id)
 				// if successful creation, call our get function to get all the new revendedoras
 				.success(function(data) {
 					$scope.loading = false;

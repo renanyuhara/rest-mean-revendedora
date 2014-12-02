@@ -4,16 +4,16 @@ angular.module('revendedoraService', [])
 	// each function returns a promise object 
 	.factory('Revendedoras', ['$http',function($http) {
 		return {
-			get : function() {
+			buscar : function() {
 				return $http.get('/api/revendedoras');
 			},
-			create : function(revendData) {
+			criar : function(revendData) {
 				return $http.post('/api/revendedoras', revendData);
 			},
-			delete : function(id) {
+			excluir : function(id) {
 				return $http.delete('/api/revendedoras/' + id);
 			},
-			put : function(id) {
+			editar : function(id) {
 				return $http.put('/api/revendedoras/' + id);
 			}
 		}

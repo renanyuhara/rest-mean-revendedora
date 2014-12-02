@@ -1,13 +1,22 @@
 var Revendedora = require('./models/revendedora');
+var Cliente = require('./models/cliente');
+var Produto = require('./models/produto');
 
 function getRevendedoras(res) {
 	Revendedora.find(function(err, revendedoras) {
-		// se der erro, retorna erro
 		if (err)
 			res.send(err);
 		res.json(revendedoras); //retorna todas as revendedoras em formato JSON
 	});
 };
+
+function getProdutos(res) {
+	Produto.find(function(err, produtos) {
+		if (err)
+			res.send(err);
+		res.json(produtos); //retorna todas as revendedoras em formato JSON
+	});	
+}
 
 module.exports = function(app) {
 
@@ -19,6 +28,7 @@ module.exports = function(app) {
 
 	//cria a revendedora e retorna todas as revendedoras
 	app.post('/api/revendedoras', function(req, res) {
+
 		// Cria a Revendedora, informação vem de requisição AJAX do Angular
 		Revendedora.create({
 			nome : req.body.nome,
@@ -56,6 +66,18 @@ module.exports = function(app) {
 		});
 	});
 
+	// Produtos
+	app.get('/api/produtos', function(req,res) {
+		getProdutos(res);
+	});
+
+	app.post('/api/produto', function(req,res) {
+		Produto.create({
+			
+		})
+	});
+	// Fim Produtos
+
 	app.get('/revendedoras/cadastro', function(req, res) {
 		res.sendfile('./public/cadastro.html');
 		return;
@@ -68,7 +90,7 @@ module.exports = function(app) {
 
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {
-		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+		res.sendfile('./public/login.html'); // load the single view file (angular will handle the page changes on the front-end)
 	});
 
 
