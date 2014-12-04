@@ -79,18 +79,36 @@ app.use(function(req, res, next) {
 			full_img_url : "",
 			sku : "89239812371",
 			preco : 1.43
-		});
-		Produto.create({
-			nome : "Meia",
-			full_img_url : "",
-			sku : "758459374",
-			preco : 25.99
-		});
+		}, function(err, revend) {
+			if (err)
+				res.send(err);
+			Produto.create({
+				nome : "Meia",
+				full_img_url : "",
+				sku : "758459374",
+				preco : 25.99
+			}, function(err, revend) {
+				if (err)
+					res.send(err);
+				getProdutos(res);
+			});
+		})
+		
 	});
 	app.get('/api/produtos', function(req,res) {
 		getProdutos(res);
 	});
 	app.post('/api/produto', function(req,res) {
+		
+		if (req.body.nome == undefined) {
+			res.json({ error: "Nome não informado" });
+			return;
+		}
+		
+		if (req.body.nome == "") {
+			res.json( { error: "Nome não informado" });
+			return;
+		}
 
 		Produto.create({
 			nome : req.body.nome,
