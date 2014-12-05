@@ -1,6 +1,7 @@
 var Revendedora = require('./models/revendedora');
 var Cliente = require('./models/cliente');
 var Produto = require('./models/produto');
+var PedidoVendaItem = require('./models/pedidovendaitem');
 
 function getRevendedoras(res) {
 	Revendedora.find(function(err, revendedoras) {
@@ -18,6 +19,14 @@ function getProdutos(res) {
 		res.json(produtos); //retorna todas as revendedoras em formato JSON
 		
 	});	
+}
+
+function getPedidoVendaItens(res) {
+	PedidoVendaItem.find(function(err, pedidovendaitens) {
+		if (err)
+			res.send(err);
+		res.json(pedidovendaitens);
+	});
 }
 
 module.exports = function(app) {
@@ -123,6 +132,20 @@ app.use(function(req, res, next) {
 			getProdutos(res);
 		})
 	});
+
+	app.put('/api/produto/:id', function(req,res) {
+		Produto.update({
+			_id : req.params.id,
+			nome: req.body.nome,
+			full_img_url: req.body.full_img_url,
+			sku : req.body.sku,
+			preco : req.body.preco
+		}, function(err, prod) {
+			if (err)
+				res.send(err);
+			getProdutos(res);
+		});
+	});
 	app.delete('/api/produto/:id', function(req,res) {
 		Produto.remove({
 			_id : req.params.id
@@ -133,6 +156,23 @@ app.use(function(req, res, next) {
 		});		
 	});
 	// Fim Produtos
+
+	//Pedido Venda Itens
+	app.get('/api/pedidovendaitens', function(req,res) {
+		getPedidoVendaItens(res);
+	});
+	app.post('/api/pedidovendaitens', function(req,res) {
+		//req.body.nome_cliente
+		//req.body.id_produto
+		PedidoVendaItem.create({
+
+		}, function(err, pedvenditem) {
+			if (err)
+				res.send(err);
+			getPedidoVendaItens(res);
+		})
+	});
+	// Fim Pedido Venda Itens
 
 	app.get('/revendedoras/cadastro', function(req, res) {
 		res.sendfile('./public/cadastro.html');
