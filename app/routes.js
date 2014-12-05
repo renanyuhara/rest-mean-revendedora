@@ -14,7 +14,9 @@ function getProdutos(res) {
 	Produto.find(function(err, produtos) {
 		if (err)
 			res.send(err);
+		//res.status(666).json(produtos);
 		res.json(produtos); //retorna todas as revendedoras em formato JSON
+		
 	});	
 }
 
