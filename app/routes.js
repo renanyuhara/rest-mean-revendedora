@@ -144,6 +144,11 @@ app.use(function(req, res, next) {
 		return;
 	});
 
+	app.get('/produtos', function(req,res) {
+		res.sendfile('./public/produtos.html');
+		return;
+	});
+
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {
 		res.sendfile('./public/login.html'); // load the single view file (angular will handle the page changes on the front-end)
