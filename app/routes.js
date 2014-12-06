@@ -25,6 +25,7 @@ function getPedidoVendaItens(res) {
 	PedidoVendaItem.find(function(err, pedidovendaitens) {
 		if (err)
 			res.send(err);
+		
 		res.json(pedidovendaitens);
 	});
 }
@@ -35,6 +36,18 @@ function getClientes(res) {
 			res.send(err);
 		res.json(clientes);
 	});
+}
+
+function insertPedidoVendaItem(req, res) {
+		PedidoVendaItem.create({
+			id_cliente : req.body.id_cliente,
+			id_produto : req.body.id_produto
+
+		}, function(err, pedvenditem) {
+			if (err)
+				res.send(err);
+			getPedidoVendaItens(res);
+		});
 }
 
 module.exports = function(app) {
@@ -169,12 +182,17 @@ app.use(function(req, res, next) {
 	app.get('/api/pedidovendaitens', function(req,res) {
 		getPedidoVendaItens(res);
 	});
+
 	app.post('/api/pedidovendaitens', function(req,res) {
 		var nome_cliente = req.body.nome_cliente;
-		var id_cliente = null;
 
 		if (req.body.nome_cliente == undefined) {
 			res.send({erro: "nome do cliente não informado"});
+			return;
+		}
+
+		if (req.body.id_produto == undefined) {
+			res.send({erro: "produto nao informado"});
 			return;
 		}
 
@@ -182,33 +200,27 @@ app.use(function(req, res, next) {
 			if (err)
 				res.send(err);
 			if (cliente == null) {
-				Cliente.create({nome : nome_cliente}, function(req,res) {
-					Cliente.find({nome : nome_cliente}, function(err, cliente) {
+
+				Cliente.create({nome : nome_cliente}, function(err) {
+					if (err)
+						res.send(err);
+					
+					Cliente.findOne({nome : nome_cliente}, function(err, cliente) {
 						if (err)
 							res.send(err);
 						if (cliente == null) {
 							res.send({erro : "Erro ao criar cliente"});
 						}
-						res.json(cliente);
-						id_cliente = cliente._id;
+						req.body.id_cliente = cliente.id;
+						insertPedidoVendaItem(req,res);				
 					});
+
 				});
 			} else {
-				res.json(cliente);
+				req.body.id_cliente = cliente.id;
+				insertPedidoVendaItem(req,res);
 			}
-			res.json({idcliente : id_cliente});
 		});
-		return;
-		req.body.nome_cliente
-		req.body.id_produto
-
-		PedidoVendaItem.create({
-
-		}, function(err, pedvenditem) {
-			if (err)
-				res.send(err);
-			getPedidoVendaItens(res);
-		})
 	});
 	// Fim Pedido Venda Itens
 
