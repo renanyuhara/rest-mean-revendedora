@@ -29,6 +29,14 @@ function getPedidoVendaItens(res) {
 	});
 }
 
+function getClientes(res) {
+	Cliente.find(function(err, clientes) {
+		if (err)
+			res.send(err);
+		res.json(clientes);
+	});
+}
+
 module.exports = function(app) {
 
 app.use(function(req, res, next) {
@@ -162,8 +170,38 @@ app.use(function(req, res, next) {
 		getPedidoVendaItens(res);
 	});
 	app.post('/api/pedidovendaitens', function(req,res) {
-		//req.body.nome_cliente
-		//req.body.id_produto
+		var nome_cliente = req.body.nome_cliente;
+		var id_cliente = null;
+
+		if (req.body.nome_cliente == undefined) {
+			res.send({erro: "nome do cliente não informado"});
+			return;
+		}
+
+		Cliente.findOne( {nome : req.body.nome_cliente }, '_id', function(err, cliente) {
+			if (err)
+				res.send(err);
+			if (cliente == null) {
+				Cliente.create({nome : nome_cliente}, function(req,res) {
+					Cliente.find({nome : nome_cliente}, function(err, cliente) {
+						if (err)
+							res.send(err);
+						if (cliente == null) {
+							res.send({erro : "Erro ao criar cliente"});
+						}
+						res.json(cliente);
+						id_cliente = cliente._id;
+					});
+				});
+			} else {
+				res.json(cliente);
+			}
+			res.json({idcliente : id_cliente});
+		});
+		return;
+		req.body.nome_cliente
+		req.body.id_produto
+
 		PedidoVendaItem.create({
 
 		}, function(err, pedvenditem) {
@@ -173,6 +211,52 @@ app.use(function(req, res, next) {
 		})
 	});
 	// Fim Pedido Venda Itens
+
+	app.get('/api/clientes', function(req, res) {
+		getClientes(res);
+	});
+
+	app.post('/api/cliente', function(req,res) {
+		if (req.body.nome == undefined) {
+			res.send({erro : "Nome não informado"});
+		}
+		if (req.body.sobrenome == undefined) {
+			req.body.sobrenome = "";
+		}
+		if (req.body.telefone == undefined) {
+			req.body.telefone = "";
+		}
+		if (req.body.email == undefined) {
+			req.body.email = "";
+		}
+
+		Cliente.create({
+			nome: req.body.nome,
+			sobrenome: req.body.sobrenome,
+			telefone: req.body.telefone,
+			email : req.body.email
+		}, function(err, cliente) {
+			if (err)
+				res.send(err);
+			getClientes(res);
+		});
+	});
+
+	app.put('/api/cliente/:id', function(req,res) {
+		Cliente.findOneAndUpdate({_id : req.params.id}, {nome : req.body.nome}, function(err, cliente) {
+			if (err)
+				res.send(err);
+			getClientes(res);
+		});
+	});
+
+	app.delete('/api/cliente/:id', function(req,res) {
+		Cliente.remove({_id : req.params.id}, function(err, cliente) {
+			if (err)
+				res.send(err);
+			getClientes(res);
+		});
+	});
 
 	app.get('/revendedoras/cadastro', function(req, res) {
 		res.sendfile('./public/cadastro.html');

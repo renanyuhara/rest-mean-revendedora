@@ -18,13 +18,17 @@ Aplicação REST utilizando padrão MEAN.io.
 ### Produtos
 
 ####/api/produtos
-######GET : 
-#######Requisicao: 
-Nenhuma
-#######Retorno:
-_id : ObjectId (String)
-nome : String
-full_img_url : String
-sku : String
-preco : Number
+__GET :__ 
 
+__Requisicao:__
+
+Nenhuma
+
+__Retorno:__ 
+```
+* _id : ObjectId (String)
+* nome : String
+* full_img_url : String
+* sku : String
+* preco : Number
+```
