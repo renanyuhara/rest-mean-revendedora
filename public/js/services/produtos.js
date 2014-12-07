@@ -4,6 +4,9 @@ angular.module('produtoService', [])
 	// each function returns a promise object 
 	.factory('Produtos', ['$http',function($http) {
 		return {
+			navigate : function() {
+				return $http.get('/produtos');
+			},
 			get : function() {
 				return $http.get('/api/produtos');
 			},

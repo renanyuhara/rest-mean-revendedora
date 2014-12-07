@@ -1,7 +1,7 @@
-angular.module('revendedoraController', [])
+angular.module('myApp', ['revendedoraController', 'revendedoraService', 'produtoController', 'produtoService', 'clienteController', 'clienteService'])
 
 	// inject the Revendedora service factory into our controller
-	.controller('mainController', ['$scope','$http','Revendedoras', function($scope, $http, Revendedoras) {
+	.controller('revendedoraController', ['$scope','$http','Revendedoras', function($scope, $http, Revendedoras) {
 		$scope.formData = {};
 		$scope.loading = true;
 
@@ -63,12 +63,10 @@ angular.module('revendedoraController', [])
 					$scope.revendedoras = data; // assign our new list of revendedoras
 				});
 		};
-	}]);
-
-angular.module('produtoController', [])
+	}])
 
 	// inject the Produto service factory into our controller
-	.controller('mainController', ['$scope','$http','Produtos', function($scope, $http, Produtos) {
+	.controller('produtoController', ['$scope','$http','Produtos', function($scope, $http, Produtos) {
 		$scope.formData = {};
 		$scope.loading = true;
 
@@ -128,6 +126,71 @@ angular.module('produtoController', [])
 				.success(function(data) {
 					$scope.loading = false;
 					$scope.produtos = data; // assign our new list of produtos
+				});
+		};
+	}])
+
+	// inject the Cliente service factory into our controller
+	.controller('clienteController', ['$scope','$http','Clientes', function($scope, $http, Clientes) {
+		$scope.formData = {};
+		$scope.loading = true;
+
+		// GET =====================================================================
+		// when landing on the page, get all clientes and show them
+		// use the service to get all the clientes
+		Clientes.get()
+			.success(function(data) {
+				$scope.clientes = data;
+				$scope.loading = false;
+			});
+
+		// CREATE ==================================================================
+		// when submitting the add form, send the text to the node API
+		$scope.createCliente = function() {
+
+			// validate the formData to make sure that something is there
+			// if form is empty, nothing will happen
+			if ($scope.formData.nome != undefined) {
+				$scope.loading = true;
+
+				// call the create function from our service (returns a promise object)
+				//Chama public/js/services/clientes.js
+				Clientes.criar($scope.formData)
+
+					// if successful creation, call our get function to get all the new clientes
+					.success(function(data) {
+						$scope.loading = false;
+						$scope.formData = {}; // clear the form so our user is ready to enter another
+						$scope.clientes = data; // assign our new list of clientes
+					});
+			}
+		};
+
+		$scope.updateCliente = function(id) {
+			if (id != undefined) {
+				if ($scope.formData.nome != undefined) {
+					//Chama public/js/services/clientes.js
+					Clientes.editar(id, $scope.formData)
+						.success(function(data) {
+							$scope.loading = false;
+							$scope.clientes = data;
+						});
+				}
+			}
+
+		}
+
+		// DELETE ==================================================================
+		// delete a cliente after checking it
+		$scope.deleteCliente = function(id) {
+			$scope.loading = true;
+
+			//Chama public/js/services/clientes.js
+			Clientes.excluir(id)
+				// if successful creation, call our get function to get all the new clientes
+				.success(function(data) {
+					$scope.loading = false;
+					$scope.clientes = data; // assign our new list of clientes
 				});
 		};
 	}]);
