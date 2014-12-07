@@ -1,6 +1,7 @@
 var Revendedora = require('./models/revendedora');
 var Cliente = require('./models/cliente');
 var Produto = require('./models/produto');
+var PedidoVenda = require('./models/pedidovenda');
 var PedidoVendaItem = require('./models/pedidovendaitem');
 
 function getRevendedoras(res) {
@@ -21,8 +22,17 @@ function getProdutos(res) {
 	});	
 }
 
+function getPedidoVenda(res) {
+
+	PedidoVenda.find().populate('cliente').populate('revendedora').exec(function(err, results) {
+		if (err)
+			res.send(err);
+		res.json(results);
+	});
+}
+
 function getPedidoVendaItens(res) {
-	PedidoVendaItem.find().populate('id_cliente').populate('id_produto').exec(function(err, results) {
+	PedidoVendaItem.find().populate('pedidovenda').populate('produto').exec(function(err, results) {
 		if (err)
 			res.send(err);
 		res.json(results);
@@ -187,6 +197,14 @@ app.use(function(req, res, next) {
 		});		
 	});
 	// Fim Produtos
+
+	app.get('/api/pedidovenda', function(req,res) {
+		getPedidoVenda(res);
+	});
+
+	app.post('/api/pedidovenda', function(req,res) {
+		
+	});
 
 	//Pedido Venda Itens
 	app.get('/api/pedidovendaitens', function(req,res) {

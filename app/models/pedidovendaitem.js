@@ -2,8 +2,9 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 var pedidovendaitem = new Schema({
-	id_cliente: {type : Schema.Types.ObjectId, ref : 'Cliente'},
-	id_produto: {type : Schema.Types.ObjectId, ref : 'Produto'}
+	produto: {type : Schema.Types.ObjectId, ref : 'Produto'},
+	pedidovenda : {type : Schema.Types.ObjectId, ref : 'PedidoVenda'}
+	quantidade: Number
 });
 
 module.exports = mongoose.model('PedidoVendaItem', pedidovendaitem);
