@@ -94,6 +94,17 @@ app.use(function(req, res, next) {
 
 	//cria a revendedora e retorna todas as revendedoras
 	app.post('/api/revendedoras', function(req, res) {
+		if (req.body.nome == undefined) {
+			res.send({ erro : "Nome da revendedora não informado"});
+			return;
+		}
+		if (req.body.senha == undefined) {
+			res.send({erro:"Senha da revendedora não informada"});
+			return;
+		}
+		if (req.body.sobrenome == undefined) {
+			req.body.sobrenome = "";
+		}
 
 		// Cria a Revendedora, informação vem de requisição AJAX do Angular
 		Revendedora.create({
@@ -109,12 +120,21 @@ app.use(function(req, res, next) {
 
 	//Altera revendedora
 	app.put('/api/revendedoras/:revend_id', function(req,res) {
-		Revendedora.update({
-			_id : req.params.revend_id,
-			nome : req.body.nome,
-			sobrenome : req.body.sobrenome,
-			senha : req.body.senha
-		}, function(err, revend) {
+		var revendedora = {};
+		if (req.body.nome == undefined) {
+			res.send({erro: "Nome não informado"});
+			return;
+		}
+		revendedora["_id"] = req.params.revend_id;
+		revendedora["nome"] = req.body.nome;
+		
+		if (req.body.sobrenome != undefined) {
+			revendedora["sobrenome"] = req.body.sobrenome;
+		}
+		if (req.body.senha != undefined) {
+			revendedora["senha"] = req.body.senha;
+		}
+		Revendedora.update(revendedora, function(err, revend) {
 			if (err)
 				res.send(err);
 			getRevendedoras(res);
@@ -169,6 +189,15 @@ app.use(function(req, res, next) {
 			res.json( { error: "Nome não informado" });
 			return;
 		}
+		if (req.body.full_img_url == undefined) {
+			req.body.full_img_url = "http://rpgcenter.com.br/revendedora/img/produto-sem-imagem.gif";
+		}
+		if (req.body.sku == undefined) {
+			req.body.sku = "SEM SKU";
+		}
+		if (req.body.preco == undefined) {
+			req.body.preco = 1;
+		}
 
 		Produto.create({
 			nome : req.body.nome,
@@ -212,10 +241,13 @@ app.use(function(req, res, next) {
 
 	app.post('/api/pedidovenda', function(req,res) {
 		var nome_cliente = req.body.nome_cliente;
-		if (req.body.id_revendedora == undefined)
+		if (req.body.id_revendedora == undefined) {
 			res.send({ erro : "ID da revendedora não informado" });
+			return;
+		}
 		if (req.body.id_cliente == undefined) {
 			res.send({ erro : "ID do cliente não informado" });
+			return;
 		}
 
 		PedidoVenda.create({ cliente : req.body.id_cliente, revendedora : req.body.id_revendedora, efetivado: false }, function(err) {
@@ -261,10 +293,12 @@ app.use(function(req, res, next) {
 
 		if (req.body.id_pedido_venda == undefined) {
 			res.send({erro: "ID do pedido de venda não informado"});
+			return;
 		}
 
 		if (req.body.id_produto == undefined) {
 			res.send({erro: "ID do produto não informado"});
+			return;
 		}
 
 		if (req.body.quantidade == undefined) {
@@ -357,7 +391,21 @@ app.use(function(req, res, next) {
 	});
 
 	app.put('/api/cliente/:id', function(req,res) {
-		Cliente.findOneAndUpdate({_id : req.params.id}, {nome : req.body.nome}, function(err, cliente) {
+		var cli = {};
+		if (req.body.nome != undefined) {
+			cli["nome"] = req.body.nome;
+		}
+		if (req.body.sobrenome != undefined) {
+			cli["sobrenome"] = req.body.sobrenome;
+		}
+		if (req.body.telefone != undefined) {
+			cli["telefone"] = req.body.telefone;
+		}
+		if (req.body.email != undefined) {
+			cli["email"] = req.body.email;
+		}
+		
+		Cliente.findOneAndUpdate({_id : req.params.id}, cli, function(err, cliente) {
 			if (err)
 				res.send(err);
 			getClientes(res);
