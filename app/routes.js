@@ -50,6 +50,14 @@ function getPedidoVendaItens(res) {
 */
 }
 
+function getPedidoVendaItens(res, pedvenda) {
+	PedidoVendaItem.find({pedidovenda : pedvenda}).populate('pedidovenda').populate('produto').exec(function(err, results) {
+		if (err)
+			res.send(err);
+		res.json(results);
+	});
+}
+
 function getClientes(res) {
 	Cliente.find(function(err, clientes) {
 		if (err)
@@ -203,27 +211,19 @@ app.use(function(req, res, next) {
 	});
 
 	app.post('/api/pedidovenda', function(req,res) {
-		
-	});
-
-	//Pedido Venda Itens
-	app.get('/api/pedidovendaitens', function(req,res) {
-		getPedidoVendaItens(res);
-	});
-
-	app.post('/api/pedidovendaitens', function(req,res) {
 		var nome_cliente = req.body.nome_cliente;
-
-		if (req.body.nome_cliente == undefined) {
-			res.send({erro: "nome do cliente não informado"});
-			return;
+		if (req.body.id_revendedora == undefined)
+			res.send({ erro : "ID da revendedora não informado" });
+		if (req.body.id_cliente == undefined) {
+			res.send({ erro : "ID do cliente não informado" });
 		}
 
-		if (req.body.id_produto == undefined) {
-			res.send({erro: "produto nao informado"});
-			return;
-		}
-
+		PedidoVenda.create({ cliente : req.body.id_cliente, revendedora : req.body.id_revendedora, efetivado: false }, function(err) {
+			if (err)
+				res.send(err);
+			getPedidoVenda(res);
+		});
+/*
 		Cliente.findOne( {nome : req.body.nome_cliente }, '_id', function(err, cliente) {
 			if (err)
 				res.send(err);
@@ -248,6 +248,80 @@ app.use(function(req, res, next) {
 				req.body.id_cliente = cliente.id;
 				insertPedidoVendaItem(req,res);
 			}
+		});
+		*/
+	});
+
+	//Pedido Venda Itens
+	app.get('/api/pedidovendaitens', function(req,res) {
+		getPedidoVendaItens(res);
+	});
+
+	app.post('/api/pedidovendaitens', function(req,res) {
+
+		if (req.body.id_pedido_venda == undefined) {
+			res.send({erro: "ID do pedido de venda não informado"});
+		}
+
+		if (req.body.id_produto == undefined) {
+			res.send({erro: "ID do produto não informado"});
+		}
+
+		if (req.body.quantidade == undefined) {
+			req.body.quantidade = 1;
+		}
+
+		PedidoVendaItem.findOne({pedidovenda : req.body.id_pedido_venda, produto : req.body.id_produto}, function(err, pedidovendaitem) {
+			if (err)
+				res.send(err);
+			if (pedidovendaitem == null) {
+				PedidoVendaItem.create({ 
+					pedidovenda : req.body.id_pedido_venda, 
+					produto : req.body.id_produto, 
+					quantidade : req.body.quantidade }, function(err) {
+					if (err)
+						res.send(err);
+					getPedidoVendaItens(res, req.body.id_pedido_venda);
+				});
+			} else {
+				req.body.quantidade = pedidovendaitem.quantidade + req.body.quantidade;
+				PedidoVendaItem.update({ 
+					pedidovenda : req.body.id_pedido_venda, 
+					produto : req.body.id_produto 
+				}, { 
+						quantidade : req.body.quantidade 
+					}, function(err, numberAffected, raw) {
+					if (err)
+						res.send(err);
+					getPedidoVendaItens(res, req.body.id_pedido_venda);
+				});
+			}
+		});	
+	});
+
+	app.put('/api/pedidovendaitem/:id', function(req, res) {
+		if (req.params.id == undefined) {
+			res.send({ erro : "ID do Item do Pedido de Venda não informado"});
+		}
+
+		if (req.body.quantidade == undefined) {
+			req.body.quantidade = 1;
+		}		
+		PedidoVendaItem.findOneAndUpdate({_id : req.params.id }, {quantidade : req.body.quantidade}, function(err, pedidovendaitem) {
+			if (err)
+				res.send(err);
+			getPedidoVendaItens(res, pedidovendaitem.pedidovenda);
+		});
+	});
+
+	app.delete('/api/pedidovendaitem/:id', function(req, res) {
+		if (req.params.id == undefined) {
+			res.send({ erro : "ID do Item do Pedido de Venda não informado" });
+		}
+		PedidoVendaItem.findOneAndRemove({_id : req.params.id }, function(err) {
+			if (err)
+				res.send(err);
+			getPedidoVendaItens(res);
 		});
 	});
 	// Fim Pedido Venda Itens
