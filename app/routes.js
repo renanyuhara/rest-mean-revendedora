@@ -22,12 +22,22 @@ function getProdutos(res) {
 }
 
 function getPedidoVendaItens(res) {
+	PedidoVendaItem.find().populate('id_cliente').populate('id_produto').exec(function(err, results) {
+		if (err)
+			res.send(err);
+		res.json(results);
+	});
+/*
 	PedidoVendaItem.find(function(err, pedidovendaitens) {
 		if (err)
 			res.send(err);
-		
+		var arraypedido = [];
+		for (var i = 0; i < pedidovendaitens.length; i++) {
+			console.log(pedidovendaitens[i]);
+		};
 		res.json(pedidovendaitens);
 	});
+*/
 }
 
 function getClientes(res) {
