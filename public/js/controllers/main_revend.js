@@ -90,7 +90,7 @@ var mod = angular.module('moduloPrincipal', ['produtoService', 'clienteService',
 
 				// call the create function from our service (returns a promise object)
 				//Chama public/js/services/produtos.js
-				Produtos.criar($scope.formData)
+				Produtos.create($scope.formData)
 
 					// if successful creation, call our get function to get all the new produtos
 					.success(function(data) {
@@ -184,11 +184,13 @@ var mod = angular.module('moduloPrincipal', ['produtoService', 'clienteService',
 			$scope.loading = true;
 
 			//Chama public/js/services/clientes.js
-			Clientes.excluir(id)
+			Clientes.delete(id)
 				// if successful creation, call our get function to get all the new clientes
 				.success(function(data) {
 					$scope.loading = false;
 					$scope.clientes = data; // assign our new list of clientes
+				}).error(function(data) {
+					alert(data);
 				});
 		};
 	}]);

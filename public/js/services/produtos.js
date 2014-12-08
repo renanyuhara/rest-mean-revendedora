@@ -11,7 +11,7 @@ angular.module('produtoService', [])
 				return $http.get('/api/produtos');
 			},
 			create : function(produtoData) {
-				return $http.post('/api/produtos', produtoData);
+				return $http.post('/api/produto', produtoData);
 			},
 			delete : function(id) {
 				return $http.delete('/api/produtos/' + id);

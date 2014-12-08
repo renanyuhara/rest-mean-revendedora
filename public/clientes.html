@@ -115,7 +115,7 @@
 								<li><a href="clientes.html" class="active">Clientes</a></li>
 								<li class="dropdown"><a href="#">Pedidos<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="produtos2.html">Produtos</a></li>
+                                        <li><a href="produtos.html">Produtos</a></li>
 										<!--<li><a href="product-details.html">Product Details</a></li>-->
 										<!--<li><a href="checkout.html">Fechar Pedido</a></li>-->
 										<li><a href="cart.html">Carrinho</a></li> 
@@ -161,8 +161,8 @@
 					</div>
 					<div class="col-sm-9 clearfix">
 						<div class="bill-to">
-							<p>Clientes</p>
-							<div class="table-responsive cart_info">
+							<h2 class="title text-center">Clientes</h2>
+							<div class="table-responsive">
 								<table class="table table-condensed">
 									<thead>
 										<tr class="cart_menu">
@@ -174,10 +174,10 @@
 									</thead>
 									<tbody>
 										<tr ng-repeat="cliente in clientes">
-											<td class="cart_description"><h4><a href="#">{{cliente.nome}} {{cliente.sobrenome}}</a></h4></td>
-											<td class="cart_price"><p>{{cliente.telefone}}</p></td>
+											<td><h4>{{cliente.nome}} {{cliente.sobrenome}}</h4></td>
+											<td class="cart_price"><h4>{{cliente.telefone}}</h4></td>
 											<td><h4>{{cliente.email}}</h4></td>
-											<td><i class="fa fa-trash-o" ng-click="deleteCliente()"></i>
+											<td><a href="#" class="btn btn-default"><i class="fa fa-edit" ng-click=""> Editar</i></a></td>
 										</tr>
 									</tbody>
 								</table>
