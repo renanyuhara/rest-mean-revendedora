@@ -4,7 +4,7 @@ angular.module('revendedoraService', [])
 	// each function returns a promise object 
 	.factory('Revendedoras', ['$http',function($http) {
 		return {
-			buscar : function() {
+			get : function() {
 				return $http.get('/api/revendedoras');
 			},
 			criar : function(revendData) {
