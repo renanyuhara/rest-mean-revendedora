@@ -62,11 +62,11 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="#" class="active">Home</a></li>
-								<li><a href="clientes.html">Clientes</a></li>
+								<li><a href="#" ng-click="content='home.html'" ng-class="{'active':content=='home.html'}" ng-init="content='home.html'">Home</a></li>
+								<li><a href="#" ng-click="content='clientes.html'" ng-class="{'active':content=='clientes.html'}" >Clientes</a></li>
 								<li class="dropdown"><a href="#">Pedidos<i class="fa fa-angle-down"></i></a>
 		                            <ul role="menu" class="sub-menu">
-		                                <li><a href="novo_pedido.html">Novo Pedido</a></li>
+		                                <li><a href="#" ng-click="content='novo_pedido.html'" ng-class="{'active':content=='novo_pedido.html'}">Novo Pedido</a></li>
 		                                <li><a href="produtos.html">Produtos</a></li>
 		                            </ul>
 		                        </li>
