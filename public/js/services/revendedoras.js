@@ -5,7 +5,7 @@ angular.module('revendedoraService', [])
 	.factory('Revendedoras', ['$http',function($http) {
 		return {
 			get : function() {
-				return $http.get('/api/revendedoras');
+				return $http.get('/api/revendedoras'); 
 			},
 			criar : function(revendData) {
 				return $http.post('/api/revendedoras', revendData);

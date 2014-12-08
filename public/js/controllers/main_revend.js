@@ -20,7 +20,7 @@ var mod = angular.module('moduloPrincipal', ['produtoService', 'clienteService',
 
 			// validate the formData to make sure that something is there
 			// if form is empty, nothing will happen
-			console.log("entrou garoto!!");
+
 			if ($scope.formData.nome != undefined) {
 				$scope.loading = true;
 
