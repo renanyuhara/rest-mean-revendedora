@@ -8,13 +8,13 @@ angular.module('clienteService', [])
 				return $http.get('/api/clientes');
 			},
 			create : function(clienteData) {
-				return $http.post('/api/clientes', clienteData);
+				return $http.post('/api/cliente', clienteData);
 			},
 			delete : function(id) {
-				return $http.delete('/api/clientes/' + id);
+				return $http.delete('/api/cliente/' + id);
 			},
 			put : function(id) {
-				return $http.put('/api/clientes/' + id);
+				return $http.put('/api/cliente/' + id);
 			}
 		}
 	}]);

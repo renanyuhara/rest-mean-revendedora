@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="scotchProduto">
+<html ng-app="moduloPrincipal">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,7 @@
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
 
-<body ng-controller="mainController">
+<body ng-controller="produtoController">
 	<header id="header"><!--header-->
 		<!--header_top-->
 		<div class="header_top">
@@ -783,8 +783,10 @@
     <script src="js/main.js"></script>
 
     <script src="js/angular.min.js"></script><!-- load angular -->
+    <script src="js/services/produtos.js"></script><!-- load our produtos service -->
+    <script src="js/services/clientes.js"></script><!-- load our clientes service -->
+    <script src="js/services/revendedoras.js"></script><!-- load our clientes service -->
+    <script src="js/core_revend.js">--></script><!-- load our main application -->
     <script src="js/controllers/main_revend.js"></script><!-- load up our controller -->
-    <script src="js/services/produtos.js"></script><!-- load our todo service -->
-    <script src="js/core_revend.js"></script><!-- load our main application -->
 </body>
 </html>

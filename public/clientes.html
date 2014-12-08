@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="moduloPrincipal">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,7 @@
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
 
-<body>
+<body ng-controller="clienteController">
 	<header id="header"><!--header-->
 		<div class="header_top"><!--header_top-->
 			<div class="container">
@@ -151,12 +151,12 @@
 						<div class="shopper-info">
 							<p>Adicionar Cliente</p>
 							<form>
-								<input type="text" placeholder="Nome">
-								<input type="text" placeholder="Sobrenome">
-								<input type="tel" placeholder="Telefone">
-								<input type="email" placeholder="E-mail">
+								<input type="text" ng-model="formData.nome" placeholder="Nome">
+								<input type="text" ng-model="formData.sobrenome" placeholder="Sobrenome">
+								<input type="tel" ng-model="formData.telefone" placeholder="Telefone">
+								<input type="email" ng-model="formData.email" placeholder="E-mail">
 							</form>
-							<a class="btn btn-primary" href="">Cadastrar</a>
+							<a class="btn btn-primary" href="" ng-click="createCliente()">Cadastrar</a>
 						</div>
 					</div>
 					<div class="col-sm-9 clearfix">
@@ -169,18 +169,15 @@
 											<td class="image">Nome</td>
 											<td class="description">Telefone</td>
 											<td class="price">E-mail</td>
+											<td></td>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="cart_description"><h4><a href="#">Cliente Teste</a></h4></td>
-											<td class="cart_price"><p>47 1234-5678</p></td>
-											<td><h4>cliente-teste@teste.com</h4></td>
-										</tr>
-										<tr>
-											<td class="cart_description"><h4><a href="#">Cliente Teste 2</a></h4></td>
-											<td class="cart_price"><h4>47 1234-5678</h4></td>
-											<td><h4>cliente-teste2@teste.com</h4></td>
+										<tr ng-repeat="cliente in clientes">
+											<td class="cart_description"><h4><a href="#">{{cliente.nome}} {{cliente.sobrenome}}</a></h4></td>
+											<td class="cart_price"><p>{{cliente.telefone}}</p></td>
+											<td><h4>{{cliente.email}}</h4></td>
+											<td><i class="fa fa-trash-o" ng-click="deleteCliente()"></i>
 										</tr>
 									</tbody>
 								</table>
@@ -1048,5 +1045,11 @@
 	<script src="js/price-range.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
+
+    <script src="js/angular.min.js"></script><!-- load angular -->
+    <script src="js/services/produtos.js"></script><!-- load our produtos service -->
+    <script src="js/services/clientes.js"></script><!-- load our clientes service -->
+    <script src="js/services/revendedoras.js"></script><!-- load our revendedora service -->
+    <script src="js/controllers/main_revend.js"></script><!-- load up our controller -->
 </body>
 </html>
