@@ -7,6 +7,9 @@ angular.module('revendedoraService', [])
 			get : function() {
 				return $http.get('/api/revendedoras'); 
 			},
+			getSpecific : function(id) {
+				return $http.get('/api/revendedora/' + id); 
+			},
 			criar : function(revendData) {
 				return $http.post('/api/revendedoras', revendData);
 			},

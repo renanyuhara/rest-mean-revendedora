@@ -36,11 +36,10 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<!--<li><a href=""><i class="fa fa-user"></i>Conta</a></li>-->
-								<li><a href="#" ng-click="content='novo_pedido.html'"><i class="fa fa-crosshairs"></i>Novo Pedido</a></li>
-								<li><a href="#" ng-click="content='clientes.html'"><i class="fa fa-user"></i>Clientes</a></li>
-								<li><a href="#" ng-click="content='cart.html'"><i class="fa fa-shopping-cart"></i>Carrinho</a></li>
-								<li><a href="#" ng-click="content='login.html'"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="#" ng-click="content='clientes.html'" ng-class="{'active':content=='clientes.html'}"><i class="fa fa-user"></i>Clientes</a></li>
+								<li><a href="#" ng-click="content='produtos.html'" ng-class="{'active':content=='produtos.html'}"><i class="fa fa-shopping-cart"></i>Produtos</a></li>
+								<li><a href="#" ng-click="content='novo_pedido.html'" ng-class="{'active':content=='novo_pedido.html'}"><i class="fa fa-crosshairs"></i>Novo Pedido</a></li>
+								<!--<li><a href="#" ng-click="content='login.html'"><i class="fa fa-lock"></i> Login</a></li>-->
 							</ul>
 						</div>
 					</div>
@@ -64,20 +63,16 @@
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="#" ng-click="content='home.html'" ng-class="{'active':content=='home.html'}" ng-init="content='home.html'">Home</a></li>
 								<li><a href="#" ng-click="content='clientes.html'" ng-class="{'active':content=='clientes.html'}" >Clientes</a></li>
-								<li class="dropdown"><a href="#">Pedidos<i class="fa fa-angle-down"></i></a>
-		                            <ul role="menu" class="sub-menu">
-		                                <li><a href="#" ng-click="content='novo_pedido.html'" ng-class="{'active':content=='novo_pedido.html'}">Novo Pedido</a></li>
-		                                <li><a href="produtos.html">Produtos</a></li>
-		                            </ul>
-		                        </li>
+		                        <li><a href="#" ng-click="content='produtos.html'" ng-class="{'active':content=='produtos.html'}">Produtos</a></li>
+								<li><a href="#" ng-click="content='novo_pedido.html'" ng-class="{'active':content=='novo_pedido.html'}">Novo Pedido</a></li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<!--<div class="col-sm-3">
 						<div class="search_box pull-right">
 							<input type="text" placeholder="Pesquisar"/>
 						</div>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</div>

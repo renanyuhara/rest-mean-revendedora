@@ -6,10 +6,11 @@
 				<select>
 					<option ng-repeat="cliente in clientes">{{cliente.nome}}</option>
 				</select>
+				<a class="btn btn-primary" href="" ng-click="createPedido()" ng-show="acao == 'cadastrar'" ng-init="acao = 'cadastrar'">Cadastrar Pedido</a>
 			</div>
 		</div>
 		<div class="col-sm-9 padding-right" ng-controller="produtoController">
-			<div class="features_items"><!--features_items-->
+			<div class="features_items">
 				<h2 class="title text-center">Produtos</h2>
 				<div class="col-sm-4" ng-repeat="produto in produtos">
 					<div class="product-image-wrapper">
@@ -28,22 +29,9 @@
 								</div>
 							</div>
 						</div>
-						<!--<div class="choose">
-							<ul class="nav nav-pills nav-justified">
-								<li><a href=""><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-								<li><a href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
-							</ul>
-						</div>-->
 					</div>
 				</div>
-				
-				<ul class="pagination">
-					<li class="active"><a href="">1</a></li>
-					<li><a href="">2</a></li>
-					<li><a href="">3</a></li>
-					<li><a href="">&raquo;</a></li>
-				</ul>
-			</div><!--features_items-->
+			</div>
 		</div>
 	</div>
 </div>

@@ -20,7 +20,6 @@ var mod = angular.module('moduloPrincipal', ['produtoService', 'clienteService',
 
 			// validate the formData to make sure that something is there
 			// if form is empty, nothing will happen
-
 			if ($scope.formData.nome != undefined) {
 				$scope.loading = true;
 
@@ -102,14 +101,29 @@ var mod = angular.module('moduloPrincipal', ['produtoService', 'clienteService',
 			}
 		};
 
+		$scope.getProduto = function(id) {
+			if (id != undefined) {
+				//Chama public/js/services/clientes.js
+				Produtos.getSpecific(id, $scope.formData)
+					.success(function(data) {
+						$scope.formData = data;
+						$scope.acao = "alterar";
+						$scope.id_alterar = id;
+					});
+			}
+
+		}
+
 		$scope.updateProduto = function(id) {
 			if (id != undefined) {
 				if ($scope.formData.nome != undefined) {
 					//Chama public/js/services/produtos.js
-					Produtos.editar(id, $scope.formData)
+					Produtos.put(id, $scope.formData)
 						.success(function(data) {
 							$scope.loading = false;
 							$scope.produtos = data;
+							$scope.formData = "";
+							$scope.acao = "cadastrar";
 						});
 				}
 			}
@@ -165,14 +179,29 @@ var mod = angular.module('moduloPrincipal', ['produtoService', 'clienteService',
 			}
 		};
 
+		$scope.getCliente = function(id) {
+			if (id != undefined) {
+				//Chama public/js/services/clientes.js
+				Clientes.getSpecific(id, $scope.formData)
+					.success(function(data) {
+						$scope.formData = data;
+						$scope.id_alterar = id;
+						$scope.acao = "alterar";
+					});
+			}
+
+		}
+
 		$scope.updateCliente = function(id) {
 			if (id != undefined) {
 				if ($scope.formData.nome != undefined) {
 					//Chama public/js/services/clientes.js
-					Clientes.editar(id, $scope.formData)
+					Clientes.put(id, $scope.formData)
 						.success(function(data) {
 							$scope.loading = false;
 							$scope.clientes = data;
+							$scope.formData = "";
+							$scope.acao = "cadastrar";
 						});
 				}
 			}
@@ -195,3 +224,4 @@ var mod = angular.module('moduloPrincipal', ['produtoService', 'clienteService',
 				});
 		};
 	}]);
+

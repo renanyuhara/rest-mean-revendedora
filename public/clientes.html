@@ -1,45 +1,45 @@
-<section id="cart_items" ng-controller="clienteController">
-	<div class="container">
-		<div class="shopper-informations">
-			<div class="row">
-				<div class="col-sm-3">
-					<div class="shopper-info">
-						<p>Adicionar Cliente</p>
-						<form>
-							<input type="text" ng-model="formData.nome" placeholder="Nome">
-							<input type="text" ng-model="formData.sobrenome" placeholder="Sobrenome">
-							<input type="tel" ng-model="formData.telefone" placeholder="Telefone">
-							<input type="email" ng-model="formData.email" placeholder="E-mail">
-						</form>
-						<a class="btn btn-primary" href="" ng-click="createCliente()">Cadastrar</a>
-					</div>
+<div class="container" ng-controller="clienteController">
+	<div class="shopper-informations">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="shopper-info">
+					<p>Adicionar Cliente</p>
+					<form>
+						<input type="text" ng-model="formData.nome" placeholder="Nome">
+						<input type="text" ng-model="formData.sobrenome" placeholder="Sobrenome">
+						<input type="tel" ng-model="formData.telefone" placeholder="Telefone">
+						<input type="email" ng-model="formData.email" placeholder="E-mail">
+					</form>
+					<a class="btn btn-primary" href="" ng-click="createCliente()" ng-show="acao == 'cadastrar'" ng-init="acao = 'cadastrar'">Cadastrar</a>
+					<a class="btn btn-primary" href="" ng-click="updateCliente(id_alterar)" ng-show="acao == 'alterar'">Alterar</a>
+					<a class="btn btn-primary" href="" ng-click="formData = ''; acao = 'cadastrar'" ng-show="acao == 'alterar'">Cancelar</a>
 				</div>
-				<div class="col-sm-9 clearfix">
-					<div class="bill-to">
-						<h2 class="title text-center">Clientes</h2>
-						<div class="table-responsive">
-							<table class="table table-condensed">
-								<thead>
-									<tr class="cart_menu">
-										<td class="image">Nome</td>
-										<td class="description">Telefone</td>
-										<td class="price">E-mail</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="cliente in clientes">
-										<td><h4>{{cliente.nome}} {{cliente.sobrenome}}</h4></td>
-										<td class="cart_price"><h4>{{cliente.telefone}}</h4></td>
-										<td><h4>{{cliente.email}}</h4></td>
-										<td><a href="#" class="btn btn-default"><i class="fa fa-edit" ng-click=""> Editar</i></a></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+			</div>
+			<div class="col-sm-9 clearfix">
+				<div class="bill-to">
+					<h2 class="title text-center">Clientes</h2>
+					<div class="table-responsive">
+						<table class="table table-condensed">
+							<thead>
+								<tr class="cart_menu">
+									<td class="image">Nome</td>
+									<td class="description">Telefone</td>
+									<td class="price">E-mail</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="cliente in clientes">
+									<td><h4>{{cliente.nome}} {{cliente.sobrenome}}</h4></td>
+									<td class="cart_price"><h4>{{cliente.telefone}}</h4></td>
+									<td><h4>{{cliente.email}}</h4></td>
+									<td><a href="#" class="btn btn-default" ng-click="getCliente(cliente._id)"><i class="fa fa-edit"> Editar</i></a></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</section>
+</div>

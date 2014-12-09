@@ -32,7 +32,6 @@ function getPedidoVenda(res) {
 }
 
 function getPedidoVendaItens(res) {
-	console.log("Entrou 1");
 	PedidoVendaItem.find().populate('pedidovenda').populate('produto').exec(function(err, results) {
 		if (err)
 			res.send(err);
@@ -52,7 +51,6 @@ function getPedidoVendaItens(res) {
 }
 
 function getPedidoVendaItensPed(res, pedvenda) {
-	console.log("Entrou 2 : " + pedvenda);
 	if (pedvenda == undefined) {
 		getPedidoVendaItens(res);
 		return;
@@ -236,13 +234,22 @@ app.use(function(req, res, next) {
 	});
 
 	app.put('/api/produto/:id', function(req,res) {
-		Produto.update({
-			_id : req.params.id,
-			nome: req.body.nome,
-			full_img_url: req.body.full_img_url,
-			sku : req.body.sku,
-			preco : req.body.preco
-		}, function(err, prod) {
+		var prod = {};
+
+		if (req.body.nome != undefined) {
+			prod["nome"] = req.body.nome;
+		}
+		if (req.body.full_img_url != undefined) {
+			prod["full_img_url"] = req.body.full_img_url;
+		}
+		if (req.body.sku != undefined) {
+			prod["sku"] = req.body.sku;
+		}
+		if (req.body.preco != undefined) {
+			prod["preco"] = req.body.preco;
+		}
+
+		Produto.findOneAndUpdate({ _id : req.params.id}, prod, function(err, prod) {
 			if (err)
 				res.send(err);
 			getProdutos(res);
