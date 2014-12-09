@@ -92,6 +92,14 @@ app.use(function(req, res, next) {
 		getRevendedoras(res); //usa mongoose para retornar todas as revendedoras
 	});
 
+	app.get('/api/revendedoras/:id', function(req,res) {
+		Revendedora.findOne({_id : req.params.id}, function(err, cliente) {
+			if (err)
+				res.send(err);
+			res.json(cliente);
+		});	
+	});
+
 	//cria a revendedora e retorna todas as revendedoras
 	app.post('/api/revendedoras', function(req, res) {
 		if (req.body.nome == undefined) {
@@ -178,6 +186,15 @@ app.use(function(req, res, next) {
 	app.get('/api/produtos', function(req,res) {
 		getProdutos(res);
 	});
+
+	app.get('/api/produto/:id', function(req,res) {
+		Produto.findOne({_id : req.params.id}, function(err, produto) {
+			if (err)
+				res.send(err);
+			res.json(produto);
+		});
+	});
+
 	app.post('/api/produto', function(req,res) {
 		
 		if (req.body.nome == undefined) {
@@ -239,6 +256,14 @@ app.use(function(req, res, next) {
 		getPedidoVenda(res);
 	});
 
+	app.get('/api/pedidovenda/:id', function(req, res) {
+		PedidoVenda.findOne({_id : req.params.id}, function(err, pedidovenda) {
+			if (err)
+				res.send(err);
+			res.json(pedidovenda);
+		});
+	});
+
 	app.post('/api/pedidovenda', function(req,res) {
 		var nome_cliente = req.body.nome_cliente;
 		if (req.body.id_revendedora == undefined) {
@@ -287,6 +312,14 @@ app.use(function(req, res, next) {
 	//Pedido Venda Itens
 	app.get('/api/pedidovendaitens', function(req,res) {
 		getPedidoVendaItens(res);
+	});
+
+	app.get('/api/pedidovendaitens/:id', function(req,res) {
+		PedidoVendaItem.findOne({_id : req.params.id}, function(err, pedidovendaitem) {
+			if (err)
+				res.send(err);
+			res.json(pedidovendaitem);
+		});
 	});
 
 	app.post('/api/pedidovendaitens', function(req,res) {
@@ -363,6 +396,14 @@ app.use(function(req, res, next) {
 	app.get('/api/clientes', function(req, res) {
 		getClientes(res);
 	});
+
+	app.get('/api/cliente/:id', function(req,res) {
+		Cliente.findOne({_id : req.params.id}, function(err, cliente) {
+			if (err)
+				res.send(err);
+			res.json(cliente);
+		})
+	})
 
 	app.post('/api/cliente', function(req,res) {
 		if (req.body.nome == undefined) {
