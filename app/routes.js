@@ -32,6 +32,7 @@ function getPedidoVenda(res) {
 }
 
 function getPedidoVendaItens(res) {
+	console.log("Entrou 1");
 	PedidoVendaItem.find().populate('pedidovenda').populate('produto').exec(function(err, results) {
 		if (err)
 			res.send(err);
@@ -50,7 +51,12 @@ function getPedidoVendaItens(res) {
 */
 }
 
-function getPedidoVendaItens(res, pedvenda) {
+function getPedidoVendaItensPed(res, pedvenda) {
+	console.log("Entrou 2 : " + pedvenda);
+	if (pedvenda == undefined) {
+		getPedidoVendaItens(res);
+		return;
+	}
 	PedidoVendaItem.find({pedidovenda : pedvenda}).populate('pedidovenda').populate('produto').exec(function(err, results) {
 		if (err)
 			res.send(err);
@@ -83,6 +89,7 @@ module.exports = function(app) {
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT");
   next();
 });	
 
@@ -351,7 +358,7 @@ app.use(function(req, res, next) {
 					getPedidoVendaItens(res, req.body.id_pedido_venda);
 				});
 			} else {
-				req.body.quantidade = pedidovendaitem.quantidade + req.body.quantidade;
+				req.body.quantidade = parseFloat(pedidovendaitem.quantidade) + parseFloat(req.body.quantidade);
 				PedidoVendaItem.update({ 
 					pedidovenda : req.body.id_pedido_venda, 
 					produto : req.body.id_produto 
